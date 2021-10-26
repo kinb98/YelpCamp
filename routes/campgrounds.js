@@ -4,6 +4,7 @@ const ExpressError = require("../utils/ExpressError");
 const Campground = require("../models/campground");
 const { campgroundSchema } = require("../schemas.js");
 const router = express.Router();
+const { isLoggedIn } = require("../middleware");
 
 //middleware to use JOI to handle errors.
 const validateCampground = (req, res, next) => {
@@ -26,13 +27,14 @@ router.get(
 );
 
 //Renders the form to create a new campground
-router.get("/new", (req, res) => {
+router.get("/new", isLoggedIn, (req, res) => {
   res.render("campgrounds/new");
 });
 
 //Creates a new campground and redirects to the home page
 router.post(
   "/",
+  isLoggedIn,
   validateCampground,
   catchAsync(async (req, res, next) => {
     // if (!req.body.campground)
@@ -62,6 +64,7 @@ router.get(
 //Route to the edit form of a particular campsite
 router.get(
   "/:id/edit",
+  isLoggedIn,
   catchAsync(async (req, res) => {
     const campground = await Campground.findById(req.params.id);
     if (!campground) {
@@ -75,6 +78,7 @@ router.get(
 //PUT request to edit the details of a camp
 router.put(
   "/:id",
+  isLoggedIn,
   validateCampground,
   catchAsync(async (req, res) => {
     const id = req.params;
@@ -89,6 +93,7 @@ router.put(
 //DELETE request to delete the details of a camp
 router.delete(
   "/:id",
+  isLoggedIn,
   catchAsync(async (req, res) => {
     await Campground.findByIdAndDelete(req.params.id);
     req.flash("success", "Successfully deleted campground");
