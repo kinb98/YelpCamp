@@ -81,6 +81,6 @@ app.use((err, req, res, next) => {
   res.status(statusCode).render("error", { err });
 });
 
-app.listen(3000, () => {
-  console.log("Listening at port 3000");
+app.listen(8000, () => {
+  console.log("Listening at port 8000");
 });
