@@ -22,6 +22,7 @@ const MongoStore = require("connect-mongo");
 const dbUrl = process.env.DB_URL || "mongodb://localhost:27017/yelp-camp";
 
 const app = express();
+const port = process.env.PORT || 3000;
 
 // mongodb://localhost:27017/yelp-camp
 
@@ -154,6 +155,6 @@ app.use((err, req, res, next) => {
   res.status(statusCode).render("error", { err });
 });
 
-app.listen(3000, () => {
-  console.log("Listening at port 3000");
+app.listen(port, () => {
+  console.log(`Listening at port ${port}`);
 });
